@@ -1,4 +1,4 @@
-resource "aws_lb" "web_lb" {
+resource "aws_lb" "frontend_lb" {
   name                       = var.elb_name
   load_balancer_type         = "application"
   internal                   = false
@@ -10,10 +10,8 @@ resource "aws_lb" "web_lb" {
   enable_http2                     = true
 }
 
-
-# Crear el grupo de destino para el ALB
-resource "aws_lb_target_group" "web_tg" {
-  name     = "alb-target-group-web"
+resource "aws_lb_target_group" "frontend_tg" {
+  name     = "alb-target-group-frontend"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
@@ -28,19 +26,19 @@ resource "aws_lb_target_group" "web_tg" {
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.web_lb.arn
+  load_balancer_arn = aws_lb.frontend_lb.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.web_tg.arn
+    target_group_arn = aws_lb_target_group.frontend_tg.arn
   }
 }
 
-resource "aws_lb_target_group_attachment" "web_instance" {
+resource "aws_lb_target_group_attachment" "frontend_instance" {
   count            = 2
-  target_group_arn = aws_lb_target_group.web_tg.arn
-  target_id        = aws_instance.web[count.index].id
+  target_group_arn = aws_lb_target_group.frontend_tg.arn
+  target_id        = aws_instance.frontend[count.index].id
   port             = 80
 }

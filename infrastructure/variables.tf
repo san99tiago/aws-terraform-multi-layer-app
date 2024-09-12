@@ -1,9 +1,21 @@
+############################################
+# General Variables
+############################################
 variable "aws_region" {
   description = "AWS Region"
   type        = string
   default     = "us-east-1"
 }
 
+variable "app_name" {
+  description = "Name for the application"
+  type        = string
+  default     = "demo-app"
+}
+
+############################################
+# VPC Variables
+############################################
 variable "vpc_cidr_block" {
   description = "VPC CIDR"
   type        = string
@@ -31,9 +43,12 @@ variable "vpc_private_subnets_cidr" {
 variable "enable_nat_gateway" {
   description = "Enable NAT Gateway for the VPC"
   type        = bool
-  default     = false
+  default     = true # For cheaper alternatives, set to false
 }
 
+############################################
+# EC2 Variables
+############################################
 variable "instance_ami_id" {
   description = "AMI ID (Amazon Machine Image) for the EC2 instance"
   type        = string
@@ -53,8 +68,26 @@ variable "key_name" {
   default     = "santi-tests"
 }
 
+############################################
+# ELB Variables
+############################################
 variable "elb_name" {
   description = "Name for the Application Load Balancer"
   type        = string
   default     = "cool-app"
+}
+
+############################################
+# RDS Variables
+############################################
+variable "db_user" {
+  description = "RDS database user"
+  type        = string
+  default     = "admin"
+}
+
+variable "db_name" {
+  description = "The name of the database"
+  type        = string
+  default     = "movie_db"
 }

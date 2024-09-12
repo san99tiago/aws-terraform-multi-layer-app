@@ -1,0 +1,16 @@
+{
+  "name": "movie-analyst-ui",
+  "version": "1.0.0",
+  "description": "DEMO Frontend application for a movie analyst",
+  "scripts": {
+    "start": "NODE_ENV=dev && node server.js"
+  },
+  "authors": "Juan Ruiz & Santiago Garcia",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/san99tiago/aws-terraform-multi-layer-app",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "superagent": "^3.6.0"
+  }
+}
