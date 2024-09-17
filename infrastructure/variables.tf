@@ -61,11 +61,35 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-# IMPORTANT: Key must be created in AWS before running Terraform!!!
-variable "key_name" {
-  description = "SSH Key Pair Name for the EC2 instance"
-  type        = string
-  default     = "santi-tests"
+variable "total_frontend_instances" {
+  description = "Total number of frontend instances"
+  type        = number
+  default     = 2
+}
+
+variable "total_backend_instances" {
+  description = "Total number of backend instances"
+  type        = number
+  default     = 2
+}
+
+# # IMPORTANT: Key must be created in AWS before running Terraform!!!
+# variable "key_name" {
+#   description = "SSH Key Pair Name for the EC2 instance"
+#   type        = string
+#   default     = "santi-tests"
+# }
+
+variable "frontend_port" {
+  description = "Port for the frontend instances and target group"
+  type        = number
+  default     = 80
+}
+
+variable "backend_port" {
+  description = "Port for the backend instances and target group"
+  type        = number
+  default     = 80
 }
 
 ############################################
@@ -90,4 +114,10 @@ variable "db_name" {
   description = "The name of the database"
   type        = string
   default     = "movie_db"
+}
+
+variable "rds_port" {
+  description = "Port for the RDS instance"
+  type        = number
+  default     = 3306
 }

@@ -30,6 +30,12 @@ resource "aws_iam_role_policy_attachment" "backend_cloudwatch_policy" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
+# TODO: Add more granular permissions only for the source-fileds bucket
+resource "aws_iam_role_policy_attachment" "backend_s3_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 ############################################
 # INSTANCE PROFILE FOR BACKEND EC2 INSTANCE
 ############################################

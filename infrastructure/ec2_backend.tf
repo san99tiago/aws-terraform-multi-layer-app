@@ -10,6 +10,8 @@ locals {
     echo export DB_PASS="${random_password.rds_password.result}" >> /etc/profile
     echo export DB_USER="${var.db_user}" >> /etc/profile
     echo export DB_NAME="${var.db_name}" >> /etc/profile
+    echo export S3_BUCKET="${aws_s3_bucket.source_files.bucket}" >> /etc/profile
+    echo export SERVER_PORT="${var.backend_port}" >> /etc/profile
     source /etc/profile
   EOF
 
@@ -22,12 +24,14 @@ locals {
 # BACKEND EC2 INSTANCE
 ############################################
 resource "aws_instance" "backend" {
+  count = var.total_backend_instances
+
   ami                         = var.instance_ami_id
   instance_type               = var.instance_type
-  subnet_id                   = aws_subnet.private[0].id # Assuming private subnet
+  subnet_id                   = aws_subnet.private[count.index].id # Assuming private subnet
   security_groups             = [aws_security_group.ec2_backend_sg.id]
   associate_public_ip_address = false # No public IP for backend
-  key_name                    = var.key_name
+  # key_name                    = var.key_name
 
   # Instance profile to enable SSM Session Manager and CloudWatch Logs
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
@@ -36,9 +40,9 @@ resource "aws_instance" "backend" {
   user_data = local.user_data_with_env_backend
 
   tags = {
-    Name = "backend-instance"
+    Name = "backend-instance-${count.index + 1}"
   }
 
   # Add dependency on RDS instance
-  depends_on = [aws_db_instance.mysql_rds]
+  depends_on = [null_resource.upload_backend_to_s3, aws_db_instance.mysql_rds]
 }

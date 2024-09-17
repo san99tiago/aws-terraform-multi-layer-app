@@ -30,17 +30,25 @@ sudo yum install -y https://s3.us-east-1.amazonaws.com/amazon-ssm-us-east-1/late
 sudo systemctl enable amazon-ssm-agent
 sudo systemctl start amazon-ssm-agent
 
-# Install Apache server
-sudo yum update -y
-sudo yum install -y httpd
 
-# Start and enable Apache server with sample content
-sudo systemctl enable httpd
-sudo systemctl start httpd
-sudo echo "<html><h1>FRONTEND APACHE SEVER WORKING</h1></html>" > /var/www/html/index.html
+# FRONTEND APP DOWNLOAD AND INSTALLATION
+# Create the /var/app directory for the application
+sudo mkdir -p /var/app
+cd /var/app
 
+# Download the frontend.zip file from the S3 bucket
+echo "----- Downloading frontend.zip from S3 -----"
+aws s3 cp s3://$S3_BUCKET/frontend.zip /var/app/
 
-# TODO: ADD FRONTEND DOWNLOAD AND INSTALLATION SCRIPTS
+# Unzip the frontend.zip file into /var/app
+echo "----- Unzipping frontend.zip -----"
+sudo unzip -o frontend.zip
 
-# # ONLY IF NEEDED AT INITIALIZATION (CONNECT TO DB)
-# mysql -h ENDPOINT -P 3306 -u USER -p"${DB_PASSWORD}"
+# Install npm dependencies
+echo "----- Installing npm dependencies -----"
+cd /var/app/frontend
+sudo npm install
+
+# Start the server with "node server.js" on port 80
+echo "----- Starting the Node.js server -----"
+node server.js > server.log 2>&1 &

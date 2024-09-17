@@ -30,14 +30,24 @@ sudo yum install -y https://s3.us-east-1.amazonaws.com/amazon-ssm-us-east-1/late
 sudo systemctl enable amazon-ssm-agent
 sudo systemctl start amazon-ssm-agent
 
-# Install Apache server
-sudo yum update -y
-sudo yum install -y httpd
+# BACKEND APP DOWNLOAD AND INSTALLATION
+# Create the /var/app directory for the application
+sudo mkdir -p /var/app
+cd /var/app
 
-# Start and enable Apache server with sample content
-sudo systemctl enable httpd
-sudo systemctl start httpd
-sudo echo "<html><h1>BACKEND APACHE SEVER WORKING</h1></html>" > /var/www/html/index.html
+# Download the backend.zip file from the S3 bucket
+echo "----- Downloading backend.zip from S3 -----"
+aws s3 cp s3://$S3_BUCKET/backend.zip /var/app/
 
+# Unzip the backend.zip file into /var/app
+echo "----- Unzipping backend.zip -----"
+sudo unzip -o backend.zip
 
-# TODO: ADD BACKEND DOWNLOAD AND INSTALLATION SCRIPTS
+# Install npm dependencies
+echo "----- Installing npm dependencies -----"
+cd /var/app/backend
+sudo npm install
+
+# Start the server with "node server.js" on port 80
+echo "----- Starting the Node.js server -----"
+node server.js > server.log 2>&1 &
