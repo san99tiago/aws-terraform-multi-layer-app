@@ -4,7 +4,7 @@ Demo application to showcase a multi-layer application deployed on AWS with IaC 
 
 ## Architecture 📜
 
-<img src="assets/2024_09_01_AWS_Architecture.png" width=80%> <br>
+<img src="assets/2024_09_01_AWS_Architecture.png" width=90%> <br>
 
 Components:
 
@@ -18,19 +18,19 @@ Components:
 
 ## Resources in Action 🎩
 
-<img src="assets/frontend_deployed_02.png" width=60%>
+<img src="assets/frontend_deployed_02.png" width=90%>
 
 <br>
 
-<img src="assets/frontend_deployed_03.png" width=60%>
+<img src="assets/frontend_deployed_03.png" width=90%>
 
 <br>
 
-<img src="assets/frontend_deployed_04.png" width=60%>
+<img src="assets/frontend_deployed_04.png" width=90%>
 
 <br>
 
-<img src="assets/frontend_deployed_01.png" width=60%>
+<img src="assets/frontend_deployed_01.png" width=90%>
 
 ## Steps to Deploy via Terraform 🚀
 
